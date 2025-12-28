@@ -1,0 +1,73 @@
+@model IReadOnlyList<EnterpriseLeaveManagement.ViewModels.Leave.LeaveSummaryViewModel>
+
+@{
+    ViewData["Title"] = "Pending Approvals";
+}
+
+<div class="page-header mb-4">
+    <div>
+        <h2 class="page-title mb-1">Pending Leave Approvals</h2>
+        <p class="page-subtitle mb-0">Review and approve or reject pending leave requests from your team.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        @if (Model.Count == 0)
+        {
+            <div class="p-4 text-center text-muted">
+                There are no pending leave requests at the moment.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-modern mb-0">
+                    <thead>
+                    <tr>
+                        <th>Employee</th>
+                        <th>Type</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Requested</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.EmployeeId</td>
+                            <td>
+                                <span class="badge rounded-pill bg-light text-dark">
+                                    @item.LeaveType
+                                </span>
+                            </td>
+                            <td>@item.StartDate.ToString("dd MMM yyyy")</td>
+                            <td>@item.EndDate.ToString("dd MMM yyyy")</td>
+                            <td>@item.CreatedOn.ToString("dd MMM yyyy HH:mm")</td>
+                            <td class="text-end">
+                                <form asp-action="Approve" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.LeaveId" />
+                                    <input type="hidden" name="remarks" value="Approved by manager" />
+                                    <button type="submit" class="btn btn-sm btn-outline-success">Approve</button>
+                                </form>
+                                <form asp-action="Reject" method="post" class="d-inline ms-1">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@item.LeaveId" />
+                                    <input type="hidden" name="remarks" value="Rejected by manager" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+
+

@@ -1,0 +1,49 @@
+@model EnterpriseLeaveManagement.ViewModels.Leave.LeaveApplyViewModel
+
+@{
+    ViewData["Title"] = "Apply for Leave";
+}
+
+<h2>Apply for Leave</h2>
+
+<form asp-action="Apply" method="post">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <label asp-for="LeaveType" class="form-label"></label>
+        <select asp-for="LeaveType" class="form-select">
+            <option value="">-- Select --</option>
+            <option>Casual</option>
+            <option>Sick</option>
+            <option>Annual</option>
+        </select>
+        <span asp-validation-for="LeaveType" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StartDate" class="form-label"></label>
+        <input asp-for="StartDate" class="form-control" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label"></label>
+        <input asp-for="EndDate" class="form-control" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Reason" class="form-label"></label>
+        <textarea asp-for="Reason" class="form-control"></textarea>
+        <span asp-validation-for="Reason" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+

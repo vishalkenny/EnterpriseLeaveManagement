@@ -1,0 +1,43 @@
+@model EnterpriseLeaveManagement.ViewModels.Account.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="auth-bg d-flex align-items-center justify-content-center">
+    <div class="auth-card shadow-lg">
+        <div class="text-center mb-4">
+            <h2 class="auth-title mb-1">Welcome back</h2>
+            <p class="auth-subtitle mb-0">Sign in to continue to Enterprise Leave Management</p>
+        </div>
+
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-check mb-3">
+                <input asp-for="RememberMe" class="form-check-input" />
+                <label asp-for="RememberMe" class="form-check-label"></label>
+            </div>
+            <input type="hidden" asp-for="ReturnUrl" />
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-login">Login</button>
+            </div>
+            <div class="text-center mt-3">
+                <span class="text-muted">Don't have an account?</span>
+                <a asp-action="Register" class="auth-link ms-1">Register</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

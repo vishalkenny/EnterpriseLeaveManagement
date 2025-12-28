@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4 mb-4">Enterprise Leave Management</h1>
+
+    @if (!(User.Identity?.IsAuthenticated ?? false))
+    {
+        <p class="lead mb-3">Welcome to the Enterprise Leave Management portal.</p>
+        <p class="text-muted">
+            Please log in using the button in the top-right navigation bar to access your dashboard.
+        </p>
+    }
+</div>

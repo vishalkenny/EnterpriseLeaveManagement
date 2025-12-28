@@ -1,0 +1,96 @@
+@model EnterpriseLeaveManagement.ViewModels.Leave.EmployeeLeaveDashboardViewModel
+
+@{
+    ViewData["Title"] = "My Leave Requests";
+}
+
+<div class="page-header mb-4">
+    <div>
+        <h2 class="page-title mb-1">My Leave Requests</h2>
+        <p class="page-subtitle mb-0">View and manage leave requests you have submitted.</p>
+    </div>
+    <div>
+        <a asp-action="Apply" class="btn btn-primary">
+            + Apply for Leave
+        </a>
+    </div>
+</div>
+
+<div class="row mb-4">
+    @foreach (var balance in Model.Balances)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title mb-1">@balance.LeaveType Leave</h5>
+                    <p class="text-muted mb-2">Annual allowance: @balance.AllowanceDays days</p>
+                    <div class="display-6">@balance.RemainingDays</div>
+                    <small class="text-muted">Remaining (used @balance.UsedDays days)</small>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        @if (Model.Requests.Count == 0)
+        {
+            <div class="p-4 text-center text-muted">
+                You have not submitted any leave requests yet.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-modern mb-0">
+                    <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Status</th>
+                        <th>Requested</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.Requests)
+                    {
+                        <tr>
+                            <td>
+                                <span class="badge rounded-pill bg-light text-dark">
+                                    @item.LeaveType
+                                </span>
+                            </td>
+                            <td>@item.StartDate.ToString("dd MMM yyyy")</td>
+                            <td>@item.EndDate.ToString("dd MMM yyyy")</td>
+                            <td>
+                                <span class="badge status-badge status-@item.Status.ToLowerInvariant()">
+                                    @item.Status
+                                </span>
+                            </td>
+                            <td>@item.CreatedOn.ToString("dd MMM yyyy HH:mm")</td>
+                            <td class="text-end">
+                                @if (item.Status == EnterpriseLeaveManagement.Services.LeaveService.LeaveStatus.Pending)
+                                {
+                                    <form asp-action="Cancel" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.LeaveId" />
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+
+
